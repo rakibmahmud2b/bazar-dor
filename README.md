@@ -1,51 +1,129 @@
 # বাজার দর | BazarDor
 
-বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের দৈনিক বাজারদর, দামের ওঠানামা এবং বাজারভিত্তিক তুলনা দেখার একটি responsive web app.
+BazarDor is a responsive web application that helps people in Bangladesh check daily prices of essential products, track price changes, and compare prices across different markets.
+
+The goal is to make everyday shopping easier by providing useful market price information in one place.
 
 ## Features
 
-- API থেকে ৩৩টি পণ্যের আজকের দাম, আগের দামের পরিবর্তন এবং বাজারের তথ্য
-- দাম বাড়া ও কমা পণ্যের আলাদা তালিকা এবং চলমান live price ticker
-- বিভাগভিত্তিক catalog, Bengali সংখ্যার সঠিক numeric sorting এবং responsive product cards
-- সাইন ইন ছাড়া প্রবেশ করা যায় না এমন product detail page; ১২টি বাজারের min/max price
-- Better Auth দিয়ে email/password sign-up, sign-in ও sign-out
-- Environment credentials যোগ করলে Google ও GitHub social login
-- Protected profile এবং Better Auth-এর `updateUser` API দিয়ে নাম পরিবর্তন
-- Skeleton loading, toast feedback, invalid route-এর 404 page এবং mobile layout
+- **Daily Market Prices:** View current prices, previous price changes, and market information for 33 products using an API.
+- **Price Updates:** Check products with rising and falling prices separately and follow the live price ticker.
+- **Product Categories:** Browse products by category with responsive product cards and properly sorted Bengali numbers.
+- **Product Details:** Sign in to access product details and compare minimum and maximum prices across 12 markets.
+- **Authentication:** Create an account, sign in, and sign out using email and password with Better Auth.
+- **Social Login:** Sign in with Google or GitHub after configuring the required environment credentials.
+- **User Profile:** Access a protected profile page and update your name using Better Auth's `updateUser` API.
+- **User-Friendly Interface:** Includes skeleton loading states, toast notifications, a custom 404 page, and a mobile-friendly layout.
 
-## Technologies
+## Technologies Used
 
-- Next.js 16 App Router, React 19, JavaScript
-- Better Auth with SQLite for local development
-- Tailwind CSS 4, custom responsive CSS, Lucide icons
+- Next.js 16 with App Router
+- React 19
+- JavaScript
+- Better Auth
+- SQLite for local authentication storage
+- Tailwind CSS 4 and custom responsive CSS
+- Lucide Icons
 - React Hot Toast
-- BazarDor product API
+- BazarDor Product API
 
-## Run Locally
+## Getting Started
 
-```bash
-npm install
-Copy-Item .env.example .env
-npm run auth:migrate
-npm run dev
-```
+Follow these steps to run the project on your local machine.
 
-The migration command asks for confirmation before creating the auth tables. Open `http://localhost:3000` after it completes. Local email/password auth stores its database in `bazardor-auth.sqlite`; keep this file out of source control.
+### Prerequisites
 
-Set `BETTER_AUTH_SECRET` to a unique random value of at least 32 characters before deployment. `BETTER_AUTH_URL` must match the deployed origin. Google and GitHub buttons become active after their corresponding client ID and secret are configured in the environment. OAuth callback URLs should use `/api/auth/callback/google` and `/api/auth/callback/github`.
+Make sure you have Node.js and npm installed.
 
-The included SQLite adapter is intended for local development or a host with persistent disk. Serverless deployments need a persistent Better Auth database adapter and its connection environment variables; an ephemeral function filesystem will not retain accounts between instances.
+### Installation
 
-## Data API
+1. Clone the repository and open the project folder.
+2. Install the dependencies:
 
-Primary base URL: `https://api.api-store.workers.dev/api/bazardor`
-Fallback base URL: `https://api.abcz.workers.dev/api/bazardor`
+   ```bash
+   npm install
+   ```
 
-The app reads `/products`, `/products?category={slug}`, `/products/{id}`, `/categories`, and `/categories/{slug}`. The public product routes use slugs; the detail API expects a numeric ID, resolved from the catalog first.
+3. Create your local environment file:
 
-## Checks
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+4. Run the authentication database migration:
+
+   ```bash
+   npm run auth:migrate
+   ```
+
+   Confirm the migration when prompted.
+
+5. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+Local email and password authentication stores its data in `bazardor-auth.sqlite`. Make sure this database file is excluded from source control.
+
+## Environment Configuration
+
+Before deploying the application, configure the required environment variables.
+
+- `BETTER_AUTH_SECRET`: A unique, randomly generated secret containing at least 32 characters.
+- `BETTER_AUTH_URL`: The base URL of your application, matching the deployed domain.
+- Google OAuth credentials: Required to enable Google sign-in.
+- GitHub OAuth credentials: Required to enable GitHub sign-in.
+
+Use the following callback URLs when configuring OAuth providers:
+
+- Google: `/api/auth/callback/google`
+- GitHub: `/api/auth/callback/github`
+
+Google and GitHub sign-in will be available once their respective client IDs and client secrets are configured.
+
+**Deployment note:** The included SQLite setup is intended for local development or environments with persistent storage. For serverless deployment, use a persistent database adapter supported by Better Auth and configure the required connection settings. An ephemeral filesystem may not retain user accounts between instances.
+
+## Product API
+
+BazarDor uses the following API endpoints to retrieve product and category information.
+
+**Primary API**
+
+`https://api.api-store.workers.dev/api/bazardor`
+
+**Fallback API**
+
+`https://api.abcz.workers.dev/api/bazardor`
+
+The application uses these endpoints:
+
+- `/products` — Retrieve the product catalog.
+- `/products?category={slug}` — Get products from a specific category.
+- `/products/{id}` — Retrieve details for a specific product.
+- `/categories` — Retrieve available categories.
+- `/categories/{slug}` — Get information about a specific category.
+
+Public product routes use slugs, while the product detail API expects a numeric ID. The application resolves the corresponding ID from the product catalog before requesting the details.
+
+## Available Scripts
+
+Run the following commands to check the project before deployment.
+
+**Lint**
 
 ```bash
 npm run lint
+```
+
+**Production Build**
+
+```bash
 npm run build
 ```
+
+## Project Goal
+
+BazarDor is built to make market price information easier to access and understand. By bringing product prices, price changes, and market comparisons together, it aims to help users make more informed everyday shopping decisions.
